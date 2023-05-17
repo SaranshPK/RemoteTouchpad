@@ -21,7 +21,8 @@ Remote TouchPad is a Windows executable which will host a local Web Application 
 There are two ways to run the TouchPad:
 
 1. Via the executable file:
-   - Download the exe file.
+   - Download the exe file [here](
+https://github.com/SaranshPK/RemoteTouchpad/raw/master/RemoteTouchPad.exe).
    - Run the exe file. You will be prompted with your local IP address.
    - Open your browser on your touch device and go to `http://<your-local-ip>:8080`.
    - Replace `<your-local-ip>` with the actual IP address printed by the executable.
