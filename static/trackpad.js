@@ -60,10 +60,17 @@ let emitInterval = null;
 let scrollInterval = null;
 let clicked = false;
 let dragging = false;
-let lastTapTime = 0;
 
-function scroll(touch) {
-    currentTouch = lastTouch = { clientX: touch.clientX, clientY: touch.clientY };
+function scroll(touches) {
+    let currentTouch = lastTouch = null;
+    if (touches.length == 2) {
+        currentTouch = lastTouch = {
+            clientX: (touches[0].clientX + touches[1].clientX) / 2,
+            clientY: (touches[0].clientY + touches[1].clientY) / 2
+        };
+    } else {
+        currentTouch = lastTouch = { clientX: touches[0].clientX, clientY: touches[0].clientY };
+    }
     scrollInterval = setInterval(() => {
         if (currentTouch && lastTouch) {
             const dy = currentTouch.clientY - lastTouch.clientY;
@@ -73,8 +80,8 @@ function scroll(touch) {
     }, emitTimer);
 }
 
-function mouseMove(touch) {
-    currentTouch = lastTouch = { clientX: touch.clientX, clientY: touch.clientY };
+function mouseMove(touches) {
+    currentTouch = lastTouch = { clientX: touches[0].clientX, clientY: touches[0].clientY };
     let broken = false;
     emitInterval = setInterval(() => {
         if (lastTouch && currentTouch) {
@@ -106,28 +113,17 @@ trackpad.addEventListener('touchstart', (event) => {
         clicked = false;
     }
     if (touches.length === 1) {
-        const touch = touches[0];
         if (window.innerWidth - touch.clientX < scrollThreshold) {
-            scroll(touch);
+            scroll(touches);
         } else if (clicked) {
             socket.emit('mousedown');
-            mouseMove(touch);
+            mouseMove(touches);
             dragging = true;
         } else {
             mouseMove(touch)
         }
     } else if (touches.length === 2) {
-        currentTouch = lastTouch = {
-            clientX: (touches[0].clientX + touches[1].clientX) / 2,
-            clientY: (touches[0].clientY + touches[1].clientY) / 2
-        };
-        scrollInterval = setInterval(() => {
-            if (currentTouch && lastTouch) {
-                const dy = currentTouch.clientY - lastTouch.clientY;
-                socket.emit('scroll', { dy: dy * realizedScrollSpeed });
-                lastTouch = { clientX: currentTouch.clientX, clientY: currentTouch.clientY };
-            }
-        }, emitTimer);
+        scroll(touches);
     }
 });
 
@@ -139,14 +135,6 @@ trackpad.addEventListener('touchmove', (event) => {
 
 trackpad.addEventListener('touchend', () => {
     reset();
-    let doubleTap = false;
-
-    const now = Date.now();
-    if (now - lastTapTime < 200) { // 200 ms threshold for double tap
-        doubleTap = true;
-    }
-    lastTapTime = now;
-
     clicked = false;
     if (currentTouch) {
         let dy = 0;
@@ -160,17 +148,12 @@ trackpad.addEventListener('touchend', () => {
         const touchDuration = touchEndTime - touchStartTime;
         if (!dragging && touchDuration < clickTimeThreshold && Math.hypot(dx, dy) < ((clickDistThreshold/20.0)*emitTimer)) {
             clicked = true;
-            if (!doubleTap) {
-                socket.emit('mousedown');
-            }
+            socket.emit('mousedown');
         }
     }
-    if (!doubleTap) {
-        socket.emit('mouseup');
-    }
-    dragging = doubleTap;
+    socket.emit('mouseup')
+    dragging = false;
 });
-
 
 // Method to handle chagen in touches
 function newTouch() {
