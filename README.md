@@ -16,7 +16,7 @@ There are two ways to run the TouchPad:
 https://github.com/SaranshPK/RemoteTouchpad/raw/master/RemoteTouchPad.exe).
    - Run the exe file.
    - You will be shown a QR code which links to your local IP address.
-   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:8080`.
+   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:48080`.
    - Replace `<your-local-ip>` with the actual IP address printed by the executable.
 
 2. Via the Python script:
@@ -24,10 +24,10 @@ https://github.com/SaranshPK/RemoteTouchpad/raw/master/RemoteTouchPad.exe).
    - Install the necessary packages using pip: `pip install -r requirements.txt`.
    - Run the Python script: `python app.py`.
    - You will be shown a QR code which links to your local IP address.
-   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:8080`.
+   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:48080`.
    - Replace `<your-local-ip>` with the actual IP address printed by the script.
 
-Remember to keep the script or executable running for as long as you want to use the TouchPad.
+NOTE: The close button minimized the program to your Tray, you can quit the App from the Tray.
 
 ## Settings
 
