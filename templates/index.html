@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #trackpad {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    #settings-panel {
+        position: absolute;
+        top: 120px;
+        background-color: white;
+        padding: 20px;
+        font-size: 60px; /* Change this to increase or decrease font size */
+        width: 100%; /* Change this to adjust the width of the settings panel */
+        box-sizing: border-box;
+        z-index: 2;
+    }
+
+    #settings-panel label {
+        display: block;
+        margin-bottom: 10px;
+        z-index: 2;
+    }
+
+    #settings-panel input[type="range"] {
+        display: block;
+        margin-bottom: 20px;
+        font-size: 60px;
+        width: 100%;
+        z-index: 2;
+    }
+
+
+    #settings-panel.show {
+        display: block;
+    }
+    #settings-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 100px;
+        z-index: 2;
+        transition: transform 0.5s ease;
+    }
+    #settings-button.rotate {
+        transform: rotate(90deg);
+    }
+
+    #settings-button:focus {
+        outline: none;
+    }
+
+    #reset-settings-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 60px;
+    }
+
+    #reset-settings-button:focus {
+        outline: none;
+    }
+  </style>
+</head>
+<body>
+  <button id="settings-button">
+      <i class="fas fa-cog"></i>
+  </button>
+  <div id="settings-panel" hidden>
+      <label for="scroll-threshold-input">Scroll Threshold: <span id="scroll-threshold-value"></span></label>
+      <input id="scroll-threshold-input" type="range" min="5" max="100" step="5">
+
+      <label for="emit-timer-input">Emit Timer: <span id="emit-timer-value"></span></label>
+      <input id="emit-timer-input" type="range" min="5" max="200" step="5">
+
+      <label for="click-time-threshold-input">Click Time Threshold: <span id="click-time-threshold-value"></span></label>
+      <input id="click-time-threshold-input" type="range" min="10" max="400" step="10">
+
+      <label for="click-dist-threshold-input">Click Distance Threshold: <span id="click-dist-threshold-value"></span></label>
+      <input id="click-dist-threshold-input" type="range" min="1" max="20" step="1">
+
+      <label for="scroll-speed-input">Scroll Speed: <span id="scroll-speed-value"></span></label>
+      <input id="scroll-speed-input" type="range" min="0.1" max="2" step="0.1">
+
+      <button id="reset-settings-button">
+          <i class="fas fa-undo"></i>
+      </button>
+  </div>
+
+
+  <div id="trackpad"></div>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  <script src="/static/trackpad.js"></script>  
+</body>
+</html>
