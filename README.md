@@ -24,7 +24,7 @@ There are two ways to run the TouchPad:
    - Download the exe file.
    - Run the exe file. You will be prompted with your local IP address.
    - Open your browser on your touch device and go to `http://<your-local-ip>:8080`.
-   - Remember to replace `<your-local-ip>` with the actual IP address printed by the script or executable.
+   - Replace `<your-local-ip>` with the actual IP address printed by the executable.
 
 2. Via the Python script:
    - Clone the repository.
@@ -32,7 +32,7 @@ There are two ways to run the TouchPad:
    - Run the Python script: `python app.py`.
    - You will be prompted with your local IP address.
    - Open your browser on your touch device and go to `http://<your-local-ip>:8080`.
-   - Remember to replace `<your-local-ip>` with the actual IP address printed by the script or executable.
+   - Replace `<your-local-ip>` with the actual IP address printed by the script.
 
 Remember to keep the script or executable running for as long as you want to use the TouchPad.
 
