@@ -6,6 +6,8 @@ const emitTimerInput = document.getElementById('emit-timer-input');
 const clickTimeThresholdInput = document.getElementById('click-time-threshold-input');
 const clickDistThresholdInput = document.getElementById('click-dist-threshold-input');
 const scrollSpeedInput = document.getElementById('scroll-speed-input');
+const mouseSpeedInput = document.getElementById('mouse-speed-input');
+
 const resetSettingsButton = document.getElementById('reset-settings-button');
 const closeSettingsButton = document.getElementById('close-settings-button');
 
@@ -39,12 +41,14 @@ emitTimerInput.value = emitTimer;
 clickTimeThresholdInput.value = clickTimeThreshold;
 clickDistThresholdInput.value = clickDistThreshold;
 scrollSpeedInput.value = scrollSpeed;
+mouseSpeedInput.value = mouseSpeed;
 
 scrollThresholdValue.textContent = scrollThresholdInput.value;
 emitTimerValue.textContent = emitTimerInput.value;
 clickTimeThresholdValue.textContent = clickTimeThresholdInput.value;
 clickDistThresholdValue.textContent = clickDistThresholdInput.value;
 scrollSpeedValue.textContent = parseFloat(scrollSpeedInput.value).toFixed(1);
+mouseSpeedValue.textContent = parseFloat(mouseSpeedInput.value).toFixed(1);
 
 const socket = io();
 const trackpad = document.getElementById('trackpad');
