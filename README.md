@@ -7,15 +7,6 @@ Remote TouchPad is a Windows executable which will host a local Web Application 
 - Supports basic mouse operations like movement, click, and scroll.
 - Settings to control various parameters for a personalized experience.
 
-## Settings
-
-- Emit Timer: Control the frequency of messages sent to the server. Lower values make the mouse move smoother but may increase CPU usage or lag due to network speeds.
-- Mouse Speed: Adjust the speed of the mouse movement. Logrithmic Scale
-- Click Time Threshold: Maximum time for a touch to be considered as a click.
-- Click Distance Threshold: Maximum movement for a touch to be considered as a click.
-- Scroll Threshold: Distance from the right edge of the screen to activate scrolling.
-- Scroll Speed: Adjust the speed of scrolling. Logrithmic Scale
-
 ## How to Run
 
 There are two ways to run the TouchPad:
@@ -36,6 +27,15 @@ https://github.com/SaranshPK/RemoteTouchpad/raw/master/RemoteTouchPad.exe).
    - Replace `<your-local-ip>` with the actual IP address printed by the script.
 
 Remember to keep the script or executable running for as long as you want to use the TouchPad.
+
+## Settings
+
+- Emit Timer: Control the frequency of messages sent to the server. Lower values make the mouse move smoother but may increase CPU usage or lag due to network speeds.
+- Mouse Speed: Adjust the speed of the mouse movement. Logrithmic Scale
+- Click Time Threshold: Maximum time for a touch to be considered as a click.
+- Click Distance Threshold: Maximum movement for a touch to be considered as a click.
+- Scroll Threshold: Distance from the right edge of the screen to activate scrolling.
+- Scroll Speed: Adjust the speed of scrolling. Logrithmic Scale
 
 ## Contributing
 
