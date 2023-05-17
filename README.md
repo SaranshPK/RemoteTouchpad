@@ -58,7 +58,7 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
 
 5. Why did you make this even though there are so many existing products that do the same thing?
 
-    Idk, but if you want a real product that's open source use this https://github.com/Unrud/remote-touchpad
+    I wanted something open source to make scrolling easier.
 
 ## Contributing
 
