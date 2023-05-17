@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from engineio.async_drivers import gevent
 import pyautogui
+import qrcode
 
 import socket
 def get_local_ip():
@@ -15,6 +16,7 @@ def get_local_ip():
     finally:
         s.close()
     return IP
+
 
 
 app = Flask(__name__)
@@ -41,8 +43,24 @@ def handle_scroll(data):
 def handle_click():
     pyautogui.click()
 
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
 if __name__ == '__main__':
     local_ip = get_local_ip()
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=2,
+        border=4,
+    )
+    print('\n\n')
+    qr.add_data(f'http://{local_ip}:8080')
+    qr.make(fit=True)
+
+    qr.print_ascii()
+    
     print(f'Running on http://{local_ip}:8080')
     socketio.run(app, host='0.0.0.0', port=8080)
 

@@ -14,16 +14,17 @@ There are two ways to run the TouchPad:
 1. Via the executable file:
    - Download the exe file [here](
 https://github.com/SaranshPK/RemoteTouchpad/raw/master/RemoteTouchPad.exe).
-   - Run the exe file. You will be prompted with your local IP address.
-   - Open your browser on your touch device and go to `http://<your-local-ip>:8080`.
+   - Run the exe file.
+   - You will be shown a QR code which links to your local IP address.
+   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:8080`.
    - Replace `<your-local-ip>` with the actual IP address printed by the executable.
 
 2. Via the Python script:
    - Clone the repository.
    - Install the necessary packages using pip: `pip install -r requirements.txt`.
    - Run the Python script: `python app.py`.
-   - You will be prompted with your local IP address.
-   - Open your browser on your touch device and go to `http://<your-local-ip>:8080`.
+   - You will be shown a QR code which links to your local IP address.
+   - Either scan the QR code or manually open your browser on your touch device and go to `http://<your-local-ip>:8080`.
    - Replace `<your-local-ip>` with the actual IP address printed by the script.
 
 Remember to keep the script or executable running for as long as you want to use the TouchPad.
@@ -36,6 +37,28 @@ Remember to keep the script or executable running for as long as you want to use
 - Click Distance Threshold: Maximum movement for a touch to be considered as a click.
 - Scroll Threshold: Distance from the right edge of the screen to activate scrolling.
 - Scroll Speed: Adjust the speed of scrolling. Logrithmic Scale
+
+## FAQ
+
+1. How do I scroll?
+
+    You can scroll with two fingers or with a single finger on the right side defined by the Scroll Threshold, look at the Settings section for more info.
+
+2. Can I double click drag?
+
+    No, not yet.
+
+3. Do my settings persist?
+
+    Yes.
+
+4. How do I go back to the default settings?
+
+    Click the reset button (undo icon).
+
+5. Why did you make this even though there are so many existing products that do the same thing?
+
+    Idk, but if you want a real product that's open source use this https://github.com/Unrud/remote-touchpad
 
 ## Contributing
 
