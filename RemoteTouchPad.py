@@ -32,21 +32,24 @@ def home():
 def handle_mousemove(data):
     dx = data['dx']
     dy = data['dy']
-    print(f'dx: {dx}, dy: {dy}')
+    #print(f'Moving: dx: {dx}, dy: {dy}')
     x, y = pyautogui.position()
     pyautogui.moveTo(x + dx, y + dy, _pause=False)
 
 @socketio.on('scroll')
 def handle_scroll(data):
     dy = int(data['dy'])  # convert dy to integer
+    #print(f'Scrolling: dy: {dy}')
     pyautogui.scroll(dy, _pause=False)
 
 @socketio.on('mousedown')
 def handle_mousedown():
+    print('Mouse down')
     pyautogui.mouseDown(_pause=False)
 
 @socketio.on('mouseup')
 def handle_mouseup():
+    print('Mouse up')
     pyautogui.mouseUp(_pause=False)
 
 @socketio.on('connect')

@@ -19,9 +19,9 @@ const scrollSpeedValue = document.getElementById('scroll-speed-value');
 const mouseSpeedValue = document.getElementById('mouse-speed-value');
 
 const scrollThresholdDefault = 50;
-const emitTimerDefault = 10;
-const clickTimeThresholdDefault = 100;
-const clickDistThresholdDefault = 10;
+const emitTimerDefault = 5;
+const clickTimeThresholdDefault = 180;
+const clickDistThresholdDefault = 20;
 const scrollSpeedDefault = 1.0;
 const mouseSpeedDefault = 1.0;
 
@@ -58,11 +58,12 @@ let touchStartTime = null;
 let touchEndTime = null;
 let emitInterval = null;
 let scrollInterval = null;
+let mouseUpTimeOut = null;
+let clickStart = null;
 let clicked = false;
 let dragging = false;
 
 function scroll(touches) {
-    let currentTouch = lastTouch = null;
     if (touches.length == 2) {
         currentTouch = lastTouch = {
             clientX: (touches[0].clientX + touches[1].clientX) / 2,
@@ -73,7 +74,7 @@ function scroll(touches) {
     }
     scrollInterval = setInterval(() => {
         if (currentTouch && lastTouch) {
-            const dy = currentTouch.clientY - lastTouch.clientY;
+            let dy = currentTouch.clientY - lastTouch.clientY;
             socket.emit('scroll', { dy: dy * realizedScrollSpeed });
             lastTouch = { clientX: currentTouch.clientX, clientY: currentTouch.clientY };
         }
@@ -87,7 +88,9 @@ function mouseMove(touches) {
         if (lastTouch && currentTouch) {
             let dx = currentTouch.clientX - lastTouch.clientX;
             let dy = currentTouch.clientY - lastTouch.clientY;
-            if (!broken && (Date.now() - touchStartTime < clickTimeThreshold && Math.hypot(dx, dy) < ((clickDistThreshold/20.0)*emitTimer))) {
+            let detlaX = currentTouch.clientX - clickStart.clientX;
+            let detlaY = currentTouch.clientY - clickStart.clientY;
+            if (!broken && (Date.now() - touchStartTime < clickTimeThreshold && Math.hypot(detlaX, detlaY) < clickDistThreshold)) {
                 dx = 0
                 dy = 0
             } else {
@@ -100,6 +103,7 @@ function mouseMove(touches) {
 }
 
 trackpad.addEventListener('touchstart', (event) => {
+    clickStart = event.touches[0];
     dragging = false;
     event.preventDefault(); // Prevent scrolling while touching
     newTouch();
@@ -108,19 +112,20 @@ trackpad.addEventListener('touchstart', (event) => {
     if (touchEndTime) {
         if (Date.now() - touchEndTime > clickTimeThreshold) {
             clicked = false;
+        } else {
+            clearTimeout(mouseUpTimeOut);
         }
     } else {
         clicked = false;
     }
     if (touches.length === 1) {
-        if (window.innerWidth - touch.clientX < scrollThreshold) {
+        if (window.innerWidth - touches[0].clientX < scrollThreshold) {
             scroll(touches);
         } else if (clicked) {
-            socket.emit('mousedown');
             mouseMove(touches);
             dragging = true;
         } else {
-            mouseMove(touch)
+            mouseMove(touches)
         }
     } else if (touches.length === 2) {
         scroll(touches);
@@ -134,25 +139,28 @@ trackpad.addEventListener('touchmove', (event) => {
 });
 
 trackpad.addEventListener('touchend', () => {
-    reset();
+    if(Date.now() - touchStartTime < clickTimeThreshold) {
+        socket.emit('mouseup');
+        dragging = false;
+    }
     clicked = false;
     if (currentTouch) {
-        let dy = 0;
-        let dx = 0;
-        if(lastTouch) 
-        {
-            dx = currentTouch.clientX - lastTouch.clientX;
-            dy = currentTouch.clientY - lastTouch.clientY;
-        }
+        let deltaY = currentTouch.clientX - clickStart.clientX;
+        let deltaX = currentTouch.clientY - clickStart.clientY;
         touchEndTime = Date.now();
         const touchDuration = touchEndTime - touchStartTime;
-        if (!dragging && touchDuration < clickTimeThreshold && Math.hypot(dx, dy) < ((clickDistThreshold/20.0)*emitTimer)) {
+        
+        if (!dragging && touchDuration < clickTimeThreshold && Math.hypot(deltaX, deltaY) < clickDistThreshold) {
             clicked = true;
             socket.emit('mousedown');
         }
     }
-    socket.emit('mouseup')
-    dragging = false;
+    if (dragging || clicked) {
+        mouseUpTimeOut = setTimeout(() => {
+            socket.emit('mouseup')
+            dragging = false;
+        }, clickTimeThreshold);
+    }
 });
 
 // Method to handle chagen in touches
