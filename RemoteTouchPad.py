@@ -28,10 +28,11 @@ socketio = SocketIO(app, async_mode='gevent')
 def home():
     return render_template('index.html')
 
-@socketio.on('touchmove')
-def handle_touchmove(data):
+@socketio.on('mousemove')
+def handle_mousemove(data):
     dx = data['dx']
     dy = data['dy']
+    print(f'dx: {dx}, dy: {dy}')
     x, y = pyautogui.position()
     pyautogui.moveTo(x + dx, y + dy, _pause=False)
 
@@ -40,9 +41,13 @@ def handle_scroll(data):
     dy = int(data['dy'])  # convert dy to integer
     pyautogui.scroll(dy, _pause=False)
 
-@socketio.on('click')
-def handle_click():
-    pyautogui.click()
+@socketio.on('mousedown')
+def handle_mousedown():
+    pyautogui.mouseDown(_pause=False)
+
+@socketio.on('mouseup')
+def handle_mouseup():
+    pyautogui.mouseUp(_pause=False)
 
 @socketio.on('connect')
 def handle_connect():
