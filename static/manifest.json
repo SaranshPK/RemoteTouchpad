@@ -1,7 +1,7 @@
 {
     "name": "RemoteTouchPad",
     "short_name": "TouchPad",
-    "start_url": ".",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#fff",
     "description": "A Remote TouchPad for your PC",
