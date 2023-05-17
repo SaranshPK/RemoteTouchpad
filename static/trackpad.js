@@ -14,12 +14,14 @@ const emitTimerValue = document.getElementById('emit-timer-value');
 const clickTimeThresholdValue = document.getElementById('click-time-threshold-value');
 const clickDistThresholdValue = document.getElementById('click-dist-threshold-value');
 const scrollSpeedValue = document.getElementById('scroll-speed-value');
+const mouseSpeedValue = document.getElementById('mouse-speed-value');
 
 const scrollThresholdDefault = 50;
 const emitTimerDefault = 10;
 const clickTimeThresholdDefault = 100;
 const clickDistThresholdDefault = 10;
 const scrollSpeedDefault = 1.0;
+const mouseSpeedDefault = 1.0;
 
 // Check localStorage for any saved settings
 let scrollThreshold = localStorage.getItem('scrollThreshold') || scrollThresholdDefault;
@@ -27,7 +29,9 @@ let emitTimer = localStorage.getItem('emitTimer') || emitTimerDefault;
 let clickTimeThreshold = localStorage.getItem('clickTimeThreshold') || clickTimeThresholdDefault;
 let clickDistThreshold = localStorage.getItem('clickDistThreshold') || clickDistThresholdDefault;
 let scrollSpeed = localStorage.getItem('scrollSpeed') || scrollSpeedDefault;
+let mouseSpeed = localStorage.getItem('mouseSpeed') || mouseSpeedDefault;
 let realizedScrollSpeed = Math.pow(10, scrollSpeed - 1);
+let realizedMouseSpeed = Math.pow(10, mouseSpeed - 1);
 
 // Set the inputs to reflect the current settings
 scrollThresholdInput.value = scrollThreshold;
@@ -71,7 +75,7 @@ trackpad.addEventListener('touchstart', (event) => {
                 if (lastTouch && currentTouch) {
                     const dx = currentTouch.clientX - lastTouch.clientX;
                     const dy = currentTouch.clientY - lastTouch.clientY;
-                    socket.emit('touchmove', { dx, dy });
+                    socket.emit('touchmove', { dx: dx * realizedMouseSpeed, dy: dy * realizedMouseSpeed });
                     lastTouch = { clientX: currentTouch.clientX, clientY: currentTouch.clientY };
                 }
             }, emitTimer);
@@ -165,6 +169,13 @@ scrollSpeedInput.addEventListener('input', () => {
     realizedScrollSpeed = Math.pow(10, scrollSpeed - 1);
 });
 
+mouseSpeedInput.addEventListener('input', () => {
+    mouseSpeedValue.textContent = parseFloat(mouseSpeedInput.value).toFixed(1);
+    mouseSpeed = parseFloat(mouseSpeedInput.value);
+    localStorage.setItem('mouseSpeed', mouseSpeed);
+    realizedMouseSpeed = Math.pow(10, mouseSpeed - 1);
+});
+
 
 // Reset settings to default values when the reset button is clicked
 resetSettingsButton.addEventListener('click', () => {
@@ -173,7 +184,9 @@ resetSettingsButton.addEventListener('click', () => {
     clickTimeThreshold = clickTimeThresholdDefault;
     clickDistThreshold = clickDistThresholdDefault;
     scrollSpeed = scrollSpeedDefault;
+    mouseSpeed = mouseSpeedDefault;
     realizedScrollSpeed = Math.pow(10, scrollSpeed - 1);
+    realizedMouseSpeed = Math.pow(10, mouseSpeed - 1);
 
     // Reset localStorage
     localStorage.clear();
@@ -184,10 +197,12 @@ resetSettingsButton.addEventListener('click', () => {
     clickTimeThresholdInput.value = clickTimeThreshold;
     clickDistThresholdInput.value = clickDistThreshold;
     scrollSpeedInput.value = scrollSpeed;
+    mouseSpeedInput.value = mouseSpeed;
 
     scrollThresholdValue.textContent = scrollThresholdInput.value;
     emitTimerValue.textContent = emitTimerInput.value;
     clickTimeThresholdValue.textContent = clickTimeThresholdInput.value;
     clickDistThresholdValue.textContent = clickDistThresholdInput.value;
     scrollSpeedValue.textContent = parseFloat(scrollSpeedInput.value).toFixed(1);
+    mouseSpeedValue.textContent = parseFloat(mouseSpeedInput.value).toFixed(1);
 });
