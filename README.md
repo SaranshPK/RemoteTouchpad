@@ -4,8 +4,8 @@ Remote TouchPad is a Windows executable which will host a local Web Application 
 
 ## Features
 
-- Supports basic mouse operations like movement, click, and scroll.
-- Settings to control various parameters for a personalized experience.
+- Supports basic mouse operations like movement, click, double click, click and drag, double click and drag, and scroll.
+- Settings to control various parameters for your conveniance.
 
 ## How to Run
 
@@ -35,8 +35,9 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
 - Mouse Speed: Adjust the speed of the mouse movement. Logrithmic Scale
 - Click Time Threshold: Maximum time for a touch to be considered as a click.
 - Click Distance Threshold: Maximum movement for a touch to be considered as a click.
-- Scroll Threshold: Distance from the right edge of the screen to activate scrolling.
+- Scroll Threshold: Percentage of space from the right side of the screen which will be used for scrolling.
 - Scroll Speed: Adjust the speed of scrolling. Logrithmic Scale
+- Dark Mode: By default this is enabled but if you want light mode click the sun icon.
 
 ## FAQ
 
@@ -44,9 +45,10 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
 
     You can scroll with two fingers or with a single finger on the right side defined by the Scroll Threshold, look at the Settings section for more info.
 
-2. Can I double click drag?
+2. How do I drag?
 
-    No, not yet.
+    1.5 taps
+    Tap once and then on the second tap hold and move
 
 3. Do my settings persist?
 
@@ -58,7 +60,7 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
 
 5. Why did you make this even though there are so many existing products that do the same thing?
 
-    I wanted something open source to make scrolling easier.
+    I wanted something open source to make scrolling easier (the rest of the features are a bonus).
 
 ## Contributing
 
