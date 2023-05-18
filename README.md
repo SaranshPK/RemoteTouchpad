@@ -50,6 +50,10 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
     1.5 taps
     Tap once and then on the second tap hold and move
 
+3. How do I save my settings?
+
+    They automatically get saved, to close the settings screen click the gear icon.
+    
 3. Do my settings persist?
 
     Yes.
