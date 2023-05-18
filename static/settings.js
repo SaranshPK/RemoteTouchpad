@@ -1,9 +1,4 @@
 const SettingsElements = {
-    scrollThreshold: {
-        input: document.getElementById('scroll-threshold-input'),
-        text: document.getElementById('scroll-threshold-value'),
-        defaultValue: 50
-    },
     emitTimer: {
         input: document.getElementById('emit-timer-input'),
         text: document.getElementById('emit-timer-value'),
@@ -32,8 +27,15 @@ const SettingsElements = {
     darkMode: {
         input: document.getElementById('toggle-darkmode-button'),
         defaultValue: true
+    },
+    scrollThreshold: {
+        input: document.getElementById('scroll-threshold-input'),
+        text: document.getElementById('scroll-threshold-value'),
+        defaultValue: 5
     }
 };
+
+let settings = {};
 
 // Fetch a setting from localStorage or fall back to default
 function getSetting(key) {
@@ -47,7 +49,9 @@ function setSetting(key, value) {
 
 // Update a setting's UI elements
 function updateSettingUI(key, value) {
-    if (key !== 'darkMode') {
+    if (key === 'darkMode') {
+        toggleDarkMode(value);        
+    } else {
         value = Number(value);
         SettingsElements[key]['input'].value = value;
         if (Number.isInteger(value)) {
@@ -55,14 +59,14 @@ function updateSettingUI(key, value) {
         } else {
             SettingsElements[key]['text'].textContent = value.toFixed(1);
         }
-    } else {
-        toggleDarkMode(value);
+    }
+    if (key === 'scrollThreshold') {
+        updateGradient(value);
     }
 }
 
 // Load all settings from localStorage into the settings object and update the UI
 function loadSettings() {
-    const settings = {};
     for (const key of Object.keys(SettingsElements)) {
         settings[key] = getSetting(key);
         updateSettingUI(key, settings[key]);
@@ -89,6 +93,20 @@ function toggleDarkMode(value) {
     }
 }
 
+function updateGradient(value) {
+    console.log("Updating gradient...")
+    let gradient = null;
+    if (settings['darkMode']) {
+        console.log("Dark mode is on")
+        gradient = `linear-gradient(to right,  rgba(33,33,33,1) ${100-value}%,rgba(68,68,68,1) ${100-value}%,rgba(68,68,68,1) 100%)`;
+    } else {
+        console.log("Dark mode is off")
+        gradient = `linear-gradient(to right,  rgba(255,255,255,1) ${100-value}%,rgba(204,204,204,1) ${100-value}%,rgba(204,204,204,1) 100%)`;
+    }
+    console.log(gradient)
+    document.getElementById('trackpad').style.background = gradient;
+}
+
 // Attach event listeners for the settings UI
 function attachSettingListeners(settings) {
     for (const key of Object.keys(SettingsElements)) {
@@ -112,6 +130,7 @@ function attachSettingListeners(settings) {
         setSetting('darkMode', value);
         updateSettingUI('darkMode', value);
         settings['darkMode'] = value;
+        updateGradient(settings['scrollThreshold']);
     });
 }
 

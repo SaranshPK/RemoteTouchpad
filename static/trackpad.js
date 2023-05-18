@@ -71,7 +71,9 @@ trackpad.addEventListener('touchstart', (event) => {
         clicked = false;
     }
     if (touches.length === 1) {
-        if (window.innerWidth - touches[0].clientX < settings.scrollThreshold) {
+        console.log(touches[0].clientX/window.innerWidth);
+        console.log(settings.scrollThreshold);
+        if (touches[0].clientX/window.innerWidth > (100-settings.scrollThreshold)/100) {
             scroll(touches);
         } else if (clicked) {
             mouseMove(touches);
