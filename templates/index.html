@@ -8,84 +8,9 @@
   <link rel="apple-touch-icon" sizes="152x152" href="/statc/icons/apple-touch-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="120x120" href="/statc/icons/apple-touch-icon-120x120.png">
 
-
-  <style>
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    #trackpad {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-
-    #settings-panel {
-        position: absolute;
-        top: 120px;
-        background-color: white;
-        padding: 20px;
-        font-size: 60px; /* Change this to increase or decrease font size */
-        width: 100%; /* Change this to adjust the width of the settings panel */
-        box-sizing: border-box;
-        z-index: 2;
-    }
-
-    #settings-panel label {
-        display: block;
-        margin-bottom: 10px;
-        z-index: 2;
-    }
-
-    #settings-panel input[type="range"] {
-        transform: scale(4);
-        transform-origin: 0 0;
-        display: block;
-        margin-top: 10px;
-        margin-bottom: 70px;
-        width: 25%;
-        z-index: 2;
-    }
-
-    #settings-panel.show {
-        display: block;
-    }
-
-    #settings-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 100px;
-        z-index: 2;
-        transition: transform 0.5s ease;
-    }
-    #settings-button.rotate {
-        transform: rotate(90deg);
-    }
-
-    #settings-button:focus {
-        outline: none;
-    }
-
-    #reset-settings-button {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 80px;
-    }
-
-    #reset-settings-button:focus {
-        outline: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body id="root">
   <button id="settings-button">
       <i class="fas fa-cog"></i>
   </button>
@@ -109,13 +34,18 @@
       <input id="scroll-speed-input" type="range" min="0.1" max="2" step="0.1">
 
       <button id="reset-settings-button">
-          <i class="fas fa-undo"></i>
+        <i class="fas fa-undo"></i>
+      </button>
+      <button id="toggle-darkmode-button">
+        <i class="fa-solid fa-moon" id="fa-moon"></i>
+        <i class="fa-solid fa-sun" id="fa-sun"></i>
       </button>
   </div>
 
-
   <div id="trackpad"></div>
   <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
-  <script src="/static/trackpad.js"></script>  
+  <script type="module" src="/static/settings.js"></script>
+  <script type="module" src="/static/trackpad.js"></script>
+ 
 </body>
 </html>
