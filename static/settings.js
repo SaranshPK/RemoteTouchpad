@@ -28,6 +28,10 @@ const SettingsElements = {
         input: document.getElementById('toggle-darkmode-button'),
         defaultValue: true
     },
+    leftHanded: {
+        input: document.getElementById('toggle-left-handed-button'),
+        defaultValue: false
+    },
     scrollThreshold: {
         input: document.getElementById('scroll-threshold-input'),
         text: document.getElementById('scroll-threshold-value'),
@@ -51,6 +55,8 @@ function setSetting(key, value) {
 function updateSettingUI(key, value) {
     if (key === 'darkMode') {
         toggleDarkMode(value);        
+    } else if (key === 'leftHanded') {
+        toggleLeftHanded(value);
     } else {
         value = Number(value);
         SettingsElements[key]['input'].value = value;
@@ -60,8 +66,8 @@ function updateSettingUI(key, value) {
             SettingsElements[key]['text'].textContent = value.toFixed(1);
         }
     }
-    if (key === 'scrollThreshold') {
-        updateGradient(value);
+    if (key === 'scrollThreshold' || key === 'leftHanded' || key === 'darkMode') {
+        updateGradient();
     }
 }
 
@@ -93,31 +99,39 @@ function toggleDarkMode(value) {
     }
 }
 
-function updateGradient(value) {
-    console.log("Updating gradient...")
-    let gradient = null;
-    if (settings['darkMode']) {
-        console.log("Dark mode is on")
-        gradient = `linear-gradient(to right,  rgba(33,33,33,1) ${100-value}%,rgba(68,68,68,1) ${100-value}%,rgba(68,68,68,1) 100%)`;
-    } else {
-        console.log("Dark mode is off")
-        gradient = `linear-gradient(to right,  rgba(255,255,255,1) ${100-value}%,rgba(204,204,204,1) ${100-value}%,rgba(204,204,204,1) 100%)`;
+function toggleLeftHanded(value) {
+    if (value) {
+        document.getElementById('toggle-left-handed-button').classList.add('fa-flip-horizontal');
     }
-    console.log(gradient)
+    else {
+        document.getElementById('toggle-left-handed-button').classList.remove('fa-flip-horizontal');
+    }
+}
+
+function updateGradient() {
+    let value = settings['scrollThreshold'];
+    let direction = settings['leftHanded'] ? 'to left' : 'to right';
+    let mousePadColor = settings['darkMode'] ? 'rgba(33,33,33,1)' : 'rgba(255,255,255,1)';
+    let scrollPadColor = settings['darkMode'] ? 'rgba(68,68,68,1)' : 'rgba(204,204,204,1)';
+    let gradient = `linear-gradient(${direction}, ${mousePadColor} ${100-value}%, ${scrollPadColor} ${100-value}%, ${scrollPadColor} 100%)`;
     document.getElementById('trackpad').style.background = gradient;
 }
 
 // Attach event listeners for the settings UI
 function attachSettingListeners(settings) {
     for (const key of Object.keys(SettingsElements)) {
-        if (key === 'darkMode') {
-            continue;
+        let inputType = 'input';
+        if (key === 'darkMode' || key === 'leftHanded') {
+            inputType = 'click';
         }
-        SettingsElements[key]['input'].addEventListener('input', (event) => {
-            const value = parseFloat(event.target.value);
+        SettingsElements[key]['input'].addEventListener(inputType, (event) => {
+            let value = parseFloat(event.target.value);
+            if (key === 'darkMode' || key === 'leftHanded') {
+                value = !settings[key];
+            }
             setSetting(key, value);
-            updateSettingUI(key, value);
             settings[key] = value;
+            updateSettingUI(key, value);
             if (key === 'scrollSpeed') {
                 settings.realizedScrollSpeed = Math.pow(10, value - 1);
             } else if (key === 'mouseSpeed') {
@@ -125,13 +139,6 @@ function attachSettingListeners(settings) {
             }
         });
     }
-    SettingsElements['darkMode']['input'].addEventListener('click', () => {
-        const value = !settings['darkMode'];
-        setSetting('darkMode', value);
-        updateSettingUI('darkMode', value);
-        settings['darkMode'] = value;
-        updateGradient(settings['scrollThreshold']);
-    });
 }
 
 // Export a function that initializes everything

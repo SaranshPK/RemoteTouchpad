@@ -76,11 +76,16 @@
 
 /* Reset button styles */
 #reset-settings-button,
-#toggle-darkmode-button {
+#toggle-darkmode-button,
+#toggle-left-handed-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 8vmin;
+}
+
+#toggle-left-handed-icon {
+    transform: rotate(15deg);
 }
 
 /* Remove focus outline from reset button */
@@ -110,7 +115,8 @@
 
 .dark-mode #reset-settings-button,
 .dark-mode #settings-button,
-.dark-mode #toggle-darkmode-button {
+.dark-mode #toggle-darkmode-button,
+.dark-mode #toggle-left-handed-button {
     color: white;
 }
 
