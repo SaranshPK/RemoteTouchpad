@@ -38,6 +38,7 @@ NOTE: The close button minimized the program to your Tray, you can quit the App 
 - Scroll Threshold: Percentage of space from the right side of the screen which will be used for scrolling.
 - Scroll Speed: Adjust the speed of scrolling. Logrithmic Scale
 - Dark Mode: By default this is enabled but if you want light mode click the sun icon.
+- Left Handed Mode: Switches the location of the scroll bar.
 
 ## FAQ
 
