@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO, emit
 from engineio.async_drivers import gevent
 import pyautogui
@@ -11,6 +11,7 @@ import pystray
 from pystray import MenuItem as Item
 from multiprocessing import Process, freeze_support
 import os, sys
+import mimetypes
 
 server_process = None
 
@@ -21,12 +22,22 @@ def resource_path(relative_path):
 
 
 # Flask setup
+mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable caching
 socketio = SocketIO(app, async_mode='gevent')
 
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/static/<path:filename>')
+def custom_static(filename):
+    if filename.endswith('.js'):
+        mimetype = 'application/javascript'
+    else:
+        mimetype = None  # Let Flask infer the MIME type
+    return send_from_directory('static', filename, mimetype=mimetype)
 
 @socketio.on('mousemove')
 def handle_mousemove(data):
